@@ -235,10 +235,41 @@ const App = () => {
         <div className="tr-page-overlay">
 
             {/* --- HERO SECTION --- */}
-            <section id="hero" style={{ paddingTop: '80px', textAlign: 'center' }}>
+            <section id="hero" style={{ paddingTop: '80px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+                {/* HUD hex grid background */}
+                <div style={{
+                    position: 'absolute', inset: 0, opacity: 0.05, pointerEvents: 'none',
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='52' viewBox='0 0 60 52' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0 L60 17.3 L60 34.6 L30 52 L0 34.6 L0 17.3Z' fill='none' stroke='%2300e5ff' stroke-width='0.6'/%3E%3C/svg%3E")`,
+                    backgroundSize: '60px 52px',
+                }} />
+
                 <div className="container">
                     <div style={{ textAlign: 'center', marginBottom: '100px' }}>
-                        <div className="tr-hero-glass">
+                        <div className="tr-hero-glass" style={{ position: 'relative', overflow: 'hidden' }}>
+                            {/* HUD corner brackets */}
+                            <div style={{ position: 'absolute', top: 14, left: 14, width: 22, height: 22, borderTop: '2px solid var(--tr-cyan)', borderLeft: '2px solid var(--tr-cyan)', opacity: 0.8 }} />
+                            <div style={{ position: 'absolute', top: 14, right: 14, width: 22, height: 22, borderTop: '2px solid var(--tr-cyan)', borderRight: '2px solid var(--tr-cyan)', opacity: 0.8 }} />
+                            <div style={{ position: 'absolute', bottom: 14, left: 14, width: 22, height: 22, borderBottom: '2px solid var(--tr-cyan)', borderLeft: '2px solid var(--tr-cyan)', opacity: 0.8 }} />
+                            <div style={{ position: 'absolute', bottom: 14, right: 14, width: 22, height: 22, borderBottom: '2px solid var(--tr-cyan)', borderRight: '2px solid var(--tr-cyan)', opacity: 0.8 }} />
+
+                            {/* Animated scan line */}
+                            <div style={{
+                                position: 'absolute', left: 0, right: 0, height: '1px', top: 0,
+                                background: 'linear-gradient(90deg, transparent 0%, var(--tr-cyan) 50%, transparent 100%)',
+                                animation: 'heroScanLine 4s ease-in-out infinite',
+                                opacity: 0.45, zIndex: 0,
+                            }} />
+
+                            {/* System status bar */}
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', fontSize: '0.62rem', fontFamily: 'var(--font-mono)', opacity: 0.5, position: 'relative', zIndex: 1 }}>
+                                <span style={{ color: 'var(--tr-cyan)' }}>SYS_BOOT // v2.6.0</span>
+                                <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                    <span style={{ width: 6, height: 6, background: '#00ff88', borderRadius: '50%', display: 'inline-block', animation: 'hudBlink 1.2s ease-in-out infinite', boxShadow: '0 0 6px #00ff88' }} />
+                                    SIGNAL_ACQUIRED
+                                </span>
+                                <span style={{ color: 'var(--tr-magenta)' }}>TR-OS // ONLINE</span>
+                            </div>
+
                             <Pill icon={Activity}>OFFLINE FESTIVAL OS</Pill>
 
                             <h1
@@ -246,6 +277,7 @@ const App = () => {
                                     fontSize: 'clamp(3rem, 10vw, 6rem)',
                                     marginTop: '20px',
                                     lineHeight: 0.9,
+                                    position: 'relative', zIndex: 1,
                                 }}
                             >
                                 THE SOLUTION:{' '}
@@ -254,7 +286,7 @@ const App = () => {
 
                             <p
                                 className="tagline"
-                                style={{ marginTop: '18px', fontSize: '1.3rem', opacity: 0.85 }}
+                                style={{ marginTop: '18px', fontSize: '1.3rem', opacity: 0.85, position: 'relative', zIndex: 1 }}
                             >
                                 The offline festival survival app that keeps your crew hydrated, located and operational long after the network taps out.
                             </p>
@@ -266,6 +298,7 @@ const App = () => {
                                     justifyContent: 'center',
                                     gap: '16px',
                                     flexWrap: 'wrap',
+                                    position: 'relative', zIndex: 1,
                                 }}
                             >
                                 <button className="btn-primary">
@@ -275,11 +308,23 @@ const App = () => {
                                     For Squad Leaders: Plan Multi‑Festival Trips
                                 </button>
                             </div>
+
+                            {/* HUD data readout strip */}
+                            <div style={{
+                                display: 'flex', justifyContent: 'center', gap: '28px', flexWrap: 'wrap',
+                                marginTop: '28px', padding: '12px 24px',
+                                borderTop: '1px solid rgba(255,255,255,0.08)',
+                                fontSize: '0.6rem', fontFamily: 'var(--font-mono)',
+                                position: 'relative', zIndex: 1,
+                            }}>
+                                {['CREW_SYNC: ACTIVE', 'OFFLINE_DB: READY', 'CHECKLISTS: 47', 'FESTIVALS: 126'].map(s => (
+                                    <span key={s} style={{ color: 'var(--tr-cyan)', opacity: 0.5 }}>{s}</span>
+                                ))}
+                            </div>
                         </div>
                     </div>
 
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '32px', position: 'relative', maxWidth: '1000px', margin: '0 auto' }}>
-
                         {/* THREE-PHONE HERO IMAGE */}
                         <section style={{ marginTop: '72px', width: '100%' }}>
                             <div className="hero-phones">
@@ -449,21 +494,195 @@ const App = () => {
                         subtitle="Turn your crew into a trackable squad, not a lost crowd. QR‑based handshakes sync mission data across the air gap so you can find each other without Wi‑Fi or data."
                     />
 
-                    <div style={{ display: 'grid', gridTemplateColumns: 'minmax(350px, 450px) 1fr', gap: '80px', alignItems: 'center' }}>
-                        <GlassCard style={{ textAlign: 'center', padding: '48px' }}>
-                            <div style={{ width: '260px', height: '260px', margin: '0 auto', border: '1px solid rgba(188, 19, 254, 0.3)', borderRadius: '50%', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                <div style={{ position: 'absolute', inset: 0, borderRadius: '50%', border: '1px solid rgba(188, 19, 254, 0.1)' }}></div>
-                                <div style={{ position: 'absolute', top: '50%', left: '50%', width: '50%', height: '1px', background: 'var(--cyber-purple)', transformOrigin: 'left', animation: 'rotateRadar 5s linear infinite' }}></div>
-                                <Users size={40} className="neon-text-purple" style={{ opacity: 0.6 }} />
-                                <div style={{ position: 'absolute', top: '25%', right: '35%', width: '10px', height: '10px', background: 'var(--cyber-purple)', borderRadius: '50%', boxShadow: '0 0 15px var(--cyber-purple)' }}></div>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'minmax(350px, 490px) 1fr', gap: '80px', alignItems: 'center' }}>
+
+                        {/* ANIME HUD RADAR CARD */}
+                        <GlassCard style={{
+                            textAlign: 'center', padding: '32px 36px', position: 'relative',
+                            backgroundImage: 'linear-gradient(rgba(0,229,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,255,0.04) 1px, transparent 1px)',
+                            backgroundSize: '40px 40px',
+                        }}>
+                            {/* HUD corner brackets — cyan to match reference */}
+                            <div style={{ position: 'absolute', top: 14, left: 14, width: 20, height: 20, borderTop: '2px solid var(--tr-cyan)', borderLeft: '2px solid var(--tr-cyan)' }} />
+                            <div style={{ position: 'absolute', top: 14, right: 14, width: 20, height: 20, borderTop: '2px solid var(--tr-cyan)', borderRight: '2px solid var(--tr-cyan)' }} />
+                            <div style={{ position: 'absolute', bottom: 14, left: 14, width: 20, height: 20, borderBottom: '2px solid var(--tr-cyan)', borderLeft: '2px solid var(--tr-cyan)' }} />
+                            <div style={{ position: 'absolute', bottom: 14, right: 14, width: 20, height: 20, borderBottom: '2px solid var(--tr-cyan)', borderRight: '2px solid var(--tr-cyan)' }} />
+
+                            {/* Card title */}
+                            <div className="heading-tech" style={{ fontSize: '0.95rem', letterSpacing: '0.2em', marginBottom: '24px', color: 'white' }}>
+                                TACTICAL RADAR PULSE
                             </div>
-                            <h4 className="heading-tech" style={{ marginTop: '32px' }}>SQUAD_RADAR_ACTIVE</h4>
-                            <div className="mono-label" style={{ opacity: 0.5, marginTop: '8px' }}>ASYNC_P2P_SYNC_READY</div>
-                            <div style={{ marginTop: '32px', padding: '20px', border: '1px dashed rgba(255,255,255,0.1)', borderRadius: '16px', display: 'flex', gap: '16px', alignItems: 'center', textAlign: 'left' }}>
-                                <QrCode size={32} className="neon-text-cyan" />
+
+                            {/* Radar dish */}
+                            <div style={{ position: 'relative', width: '300px', height: '300px', margin: '0 auto' }}>
+
+                                {/* Dark base — deep blue-black with teal radial tint */}
+                                <div style={{
+                                    position: 'absolute', inset: 0, borderRadius: '50%',
+                                    background: 'radial-gradient(circle at center, rgba(0,229,255,0.09) 0%, rgba(1,4,14,0.99) 72%)',
+                                }} />
+
+                                {/* Teal crosshatch grid clipped to circle */}
+                                <div style={{
+                                    position: 'absolute', inset: 0, borderRadius: '50%', overflow: 'hidden',
+                                    backgroundImage: 'linear-gradient(rgba(0,229,255,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,255,0.07) 1px, transparent 1px)',
+                                    backgroundSize: '30px 30px',
+                                }} />
+
+                                {/* ── Unified static SVG layer ── */}
+                                <svg
+                                    viewBox="0 0 300 300"
+                                    style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none', overflow: 'visible' }}
+                                >
+                                    {/* 5 concentric range rings — teal, decreasing opacity inward */}
+                                    {[24, 50, 80, 112, 138].map((r, i) => (
+                                        <circle key={r} cx="150" cy="150" r={r}
+                                            fill="none"
+                                            stroke={`rgba(0,229,255,${0.40 - i * 0.06})`}
+                                            strokeWidth="0.85"
+                                        />
+                                    ))}
+
+                                    {/* Crosshair — more visible */}
+                                    <line x1="4" y1="150" x2="296" y2="150" stroke="rgba(0,229,255,0.35)" strokeWidth="0.7" />
+                                    <line x1="150" y1="4" x2="150" y2="296" stroke="rgba(0,229,255,0.35)" strokeWidth="0.7" />
+
+                                    {/* 120 tick marks every 3° — sharper 3-tier contrast */}
+                                    {Array.from({ length: 120 }, (_, i) => {
+                                        const deg = i * 3;
+                                        const rad = (deg * Math.PI) / 180;
+                                        const isMajor = deg % 30 === 0;
+                                        const isMed   = deg % 15 === 0;
+                                        const rOuter = 148;
+                                        const rInner = isMajor ? 124 : isMed ? 133 : 141;
+                                        return (
+                                            <line key={i}
+                                                x1={150 + rInner * Math.cos(rad)} y1={150 + rInner * Math.sin(rad)}
+                                                x2={150 + rOuter * Math.cos(rad)} y2={150 + rOuter * Math.sin(rad)}
+                                                stroke={`rgba(0,229,255,${isMajor ? 0.85 : isMed ? 0.55 : 0.28})`}
+                                                strokeWidth={isMajor ? '1.4' : '0.65'}
+                                            />
+                                        );
+                                    })}
+
+                                    {/* Outer bold ring — bright, on top of ticks */}
+                                    <circle cx="150" cy="150" r="149"
+                                        fill="none"
+                                        stroke="rgba(0,229,255,0.75)"
+                                        strokeWidth="1.5"
+                                    />
+
+                                    {/* Range ring labels — right of vertical axis, more readable */}
+                                    <text x="154" y="98"  fill="rgba(0,229,255,0.55)" fontFamily="'JetBrains Mono',monospace" fontSize="6.5" letterSpacing="0.4">100m</text>
+                                    <text x="154" y="68"  fill="rgba(0,229,255,0.48)" fontFamily="'JetBrains Mono',monospace" fontSize="6.5" letterSpacing="0.4">250m</text>
+                                    <text x="154" y="38"  fill="rgba(0,229,255,0.42)" fontFamily="'JetBrains Mono',monospace" fontSize="6.5" letterSpacing="0.4">500m</text>
+
+                                    {/* Compass labels — OUTSIDE the outer ring, at cardinal edges */}
+                                    <text x="150" y="5"   textAnchor="middle" fill="rgba(0,229,255,0.95)" fontFamily="'JetBrains Mono',monospace" fontSize="10" fontWeight="bold" letterSpacing="1">N</text>
+                                    <text x="150" y="300" textAnchor="middle" fill="rgba(0,229,255,0.95)" fontFamily="'JetBrains Mono',monospace" fontSize="10" fontWeight="bold" letterSpacing="1">S</text>
+                                    <text x="298" y="154" textAnchor="middle" fill="rgba(0,229,255,0.95)" fontFamily="'JetBrains Mono',monospace" fontSize="10" fontWeight="bold" letterSpacing="1">E</text>
+                                    <text x="2"   y="154" textAnchor="middle" fill="rgba(0,229,255,0.95)" fontFamily="'JetBrains Mono',monospace" fontSize="10" fontWeight="bold" letterSpacing="1">W</text>
+                                </svg>
+
+                                {/* ── Rotating sweep (conic trail + arm) — magenta ── */}
+                                <div style={{
+                                    position: 'absolute', inset: 0, borderRadius: '50%',
+                                    overflow: 'hidden',
+                                    animation: 'radarSweep 4s linear infinite',
+                                }}>
+                                    {/* Conic fade trail — tighter ~110° comet tail */}
+                                    <div style={{
+                                        position: 'absolute', inset: 0, borderRadius: '50%',
+                                        background: 'conic-gradient(from 0deg, rgba(255,43,214,0) 0deg, rgba(255,43,214,0) 210deg, rgba(255,43,214,0.04) 260deg, rgba(255,43,214,0.22) 340deg, rgba(255,43,214,0) 360deg)',
+                                    }} />
+                                    {/* Sweep arm — 1.5px, full radius to outer ring */}
+                                    <div style={{
+                                        position: 'absolute', top: '50%', left: '50%',
+                                        width: '50%', height: '1.5px',
+                                        background: 'linear-gradient(90deg, #ff2bd6 0%, rgba(255,43,214,0.7) 55%, transparent 100%)',
+                                        boxShadow: '0 0 5px #ff2bd6, 0 0 14px rgba(255,43,214,0.4)',
+                                        transformOrigin: 'left center',
+                                        transform: 'translateY(-50%)',
+                                    }} />
+                                </div>
+
+                                {/* ── Squad dots with label chips ── */}
+                                {[
+                                    { top: '18%', left: '63%', color: '#00e5ff',  name: 'SANDY',     info: '-456m SE', delay: '0s'   },
+                                    { top: '57%', left: '9%',  color: '#ff8c00',  name: 'BASE CAMP', info: '320m W',   delay: '0.7s' },
+                                    { top: '73%', left: '53%', color: '#00ff88',  name: 'RTAG',      info: '122m S',   delay: '1.4s' },
+                                    { top: '31%', left: '23%', color: '#ff2bd6',  name: 'DEX',       info: '89m NW',   delay: '2.1s' },
+                                ].map((dot) => (
+                                    <div key={dot.name} style={{ position: 'absolute', top: dot.top, left: dot.left }}>
+                                        {/* Ping ripple */}
+                                        <div style={{
+                                            position: 'absolute', top: '50%', left: '50%',
+                                            transform: 'translate(-50%,-50%)',
+                                            width: 22, height: 22, borderRadius: '50%',
+                                            border: `1px solid ${dot.color}`,
+                                            animation: `pingRipple 2.6s ease-out ${dot.delay} infinite`,
+                                        }} />
+                                        {/* Dot */}
+                                        <div style={{
+                                            width: 9, height: 9, borderRadius: '50%',
+                                            background: dot.color,
+                                            boxShadow: `0 0 6px ${dot.color}, 0 0 16px ${dot.color}66`,
+                                            border: '1.5px solid rgba(255,255,255,0.85)',
+                                            position: 'relative', zIndex: 3,
+                                        }} />
+                                        {/* Label chip — vertically centred with dot, to the right */}
+                                        <div style={{
+                                            position: 'absolute',
+                                            top: '50%', left: '14px',
+                                            transform: 'translateY(-55%)',
+                                            background: 'rgba(1,4,18,0.90)',
+                                            border: `1px solid ${dot.color}60`,
+                                            borderRadius: '3px',
+                                            padding: '2px 5px',
+                                            whiteSpace: 'nowrap',
+                                            backdropFilter: 'blur(6px)',
+                                            zIndex: 4,
+                                        }}>
+                                            <div style={{ fontSize: '0.43rem', fontFamily: 'var(--font-mono)', color: dot.color, fontWeight: 'bold', letterSpacing: '0.05em' }}>{dot.name}</div>
+                                            <div style={{ fontSize: '0.37rem', fontFamily: 'var(--font-mono)', color: 'rgba(255,255,255,0.5)', letterSpacing: '0.03em' }}>{dot.info}</div>
+                                        </div>
+                                    </div>
+                                ))}
+
+                                {/* Center origin dot — cyan, 6px pinpoint */}
+                                <div style={{
+                                    position: 'absolute', top: '50%', left: '50%',
+                                    transform: 'translate(-50%,-50%)',
+                                    width: 6, height: 6, borderRadius: '50%',
+                                    background: '#00e5ff',
+                                    boxShadow: '0 0 6px #00e5ff, 0 0 14px rgba(0,229,255,0.6)',
+                                    zIndex: 5,
+                                }} />
+                            </div>
+
+                            {/* Status readout strip */}
+                            <div style={{
+                                marginTop: '20px', display: 'flex', justifyContent: 'center',
+                                gap: '20px', fontSize: '0.58rem', fontFamily: 'var(--font-mono)',
+                            }}>
+                                <span style={{ color: 'var(--tr-cyan)' }}>TRACKING: <span style={{ color: '#00ff88' }}>4/6</span></span>
+                                <span style={{ color: 'rgba(255,255,255,0.3)' }}>|</span>
+                                <span style={{ color: 'var(--tr-magenta)', animation: 'hudBlink 1.5s ease-in-out infinite' }}>SWEEP: ACTIVE</span>
+                                <span style={{ color: 'rgba(255,255,255,0.3)' }}>|</span>
+                                <span style={{ color: 'var(--tr-cyan)' }}>P2P: MESH</span>
+                            </div>
+
+                            <div className="mono-label" style={{ opacity: 0.4, marginTop: '10px' }}>ASYNC_P2P_SYNC_READY</div>
+
+                            <div style={{
+                                marginTop: '18px', padding: '14px 18px',
+                                border: '1px dashed rgba(0,229,255,0.15)', borderRadius: '14px',
+                                display: 'flex', gap: '14px', alignItems: 'center', textAlign: 'left',
+                            }}>
+                                <QrCode size={26} className="neon-text-cyan" />
                                 <div>
                                     <div className="heading-tech" style={{ fontSize: '0.7rem' }}>SNEAKERNET HANDSHAKE</div>
-                                    <div className="mono-label" style={{ fontSize: '0.6rem', opacity: 0.5 }}>GENERATE_SYNC_QR</div>
+                                    <div className="mono-label" style={{ fontSize: '0.58rem', opacity: 0.45 }}>GENERATE_SYNC_QR</div>
                                 </div>
                             </div>
                         </GlassCard>
@@ -626,6 +845,24 @@ const App = () => {
         @keyframes rotateRadar {
           from { transform: rotate(0deg); }
           to { transform: rotate(360deg); }
+        }
+        @keyframes radarSweep {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        @keyframes heroScanLine {
+          0%   { top: 0%;   opacity: 0; }
+          5%   { opacity: 0.5; }
+          90%  { opacity: 0.5; }
+          100% { top: 100%; opacity: 0; }
+        }
+        @keyframes hudBlink {
+          0%, 100% { opacity: 1; }
+          50%       { opacity: 0.15; }
+        }
+        @keyframes pingRipple {
+          0%   { transform: translate(-50%, -50%) scale(1); opacity: 0.85; }
+          100% { transform: translate(-50%, -50%) scale(4.5); opacity: 0; }
         }
         @keyframes scanV {
            0% { top: 0; }
