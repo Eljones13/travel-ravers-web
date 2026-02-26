@@ -244,7 +244,7 @@ const App = () => {
                 }} />
 
                 <div className="container">
-                    <div style={{ textAlign: 'center', marginBottom: '100px' }}>
+                    <div className="tr-hero-slab-wrapper" style={{ textAlign: 'center', marginBottom: '100px' }}>
                         <div className="tr-hero-glass" style={{ position: 'relative', overflow: 'hidden' }}>
                             {/* HUD corner brackets */}
                             <div style={{ position: 'absolute', top: 14, left: 14, width: 22, height: 22, borderTop: '2px solid var(--tr-cyan)', borderLeft: '2px solid var(--tr-cyan)', opacity: 0.8 }} />
@@ -324,17 +324,12 @@ const App = () => {
                         </div>
                     </div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '32px', position: 'relative', maxWidth: '1000px', margin: '0 auto' }}>
-                        {/* THREE-PHONE HERO IMAGE */}
-                        <section style={{ marginTop: '72px', width: '100%' }}>
-                            <div className="hero-phones">
-                                <img
-                                    src="/images/travel-ravers-3phones.png"
-                                    alt="Travel Ravers app hero – Timeline, Map and Checklist screens"
-                                    className="hero-phones-img"
-                                />
-                            </div>
-                        </section>
+                    <div className="hero-phones">
+                        <img
+                            src="/images/travel-ravers-3phones.png"
+                            alt="Travel Ravers app hero – Timeline, Map and Checklist screens"
+                            className="hero-phones-img"
+                        />
                     </div>
                 </div>
             </section>
@@ -349,7 +344,7 @@ const App = () => {
                         subtitle="Trade useless grey vector grids for geo‑referenced festival maps with marked water, medical and meet‑up zones that stay visible in total signal blackout."
                     />
 
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '60px', alignItems: 'center' }}>
+                    <div className="tr-grid-2col">
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
                             <GlassCard>
                                 <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
@@ -494,10 +489,10 @@ const App = () => {
                         subtitle="Turn your crew into a trackable squad, not a lost crowd. QR‑based handshakes sync mission data across the air gap so you can find each other without Wi‑Fi or data."
                     />
 
-                    <div style={{ display: 'grid', gridTemplateColumns: 'minmax(350px, 490px) 1fr', gap: '80px', alignItems: 'center' }}>
+                    <div className="tr-grid-radar">
 
                         {/* ANIME HUD RADAR CARD */}
-                        <GlassCard style={{
+                        <GlassCard className="tr-radar-card" style={{
                             textAlign: 'center', padding: '32px 36px', position: 'relative',
                             backgroundImage: 'linear-gradient(rgba(0,229,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,255,0.04) 1px, transparent 1px)',
                             backgroundSize: '40px 40px',
@@ -514,7 +509,7 @@ const App = () => {
                             </div>
 
                             {/* Radar dish */}
-                            <div style={{ position: 'relative', width: '300px', height: '300px', margin: '0 auto' }}>
+                            <div className="tr-radar-dish">
 
                                 {/* Dark base — deep blue-black with teal radial tint */}
                                 <div style={{
@@ -532,7 +527,7 @@ const App = () => {
                                 {/* ── Unified static SVG layer ── */}
                                 <svg
                                     viewBox="0 0 300 300"
-                                    style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none', overflow: 'visible' }}
+                                    style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none', overflow: 'hidden' }}
                                 >
                                     {/* 5 concentric range rings — teal, decreasing opacity inward */}
                                     {[24, 50, 80, 112, 138].map((r, i) => (
@@ -577,11 +572,11 @@ const App = () => {
                                     <text x="154" y="68"  fill="rgba(0,229,255,0.48)" fontFamily="'JetBrains Mono',monospace" fontSize="6.5" letterSpacing="0.4">250m</text>
                                     <text x="154" y="38"  fill="rgba(0,229,255,0.42)" fontFamily="'JetBrains Mono',monospace" fontSize="6.5" letterSpacing="0.4">500m</text>
 
-                                    {/* Compass labels — OUTSIDE the outer ring, at cardinal edges */}
-                                    <text x="150" y="5"   textAnchor="middle" fill="rgba(0,229,255,0.95)" fontFamily="'JetBrains Mono',monospace" fontSize="10" fontWeight="bold" letterSpacing="1">N</text>
-                                    <text x="150" y="300" textAnchor="middle" fill="rgba(0,229,255,0.95)" fontFamily="'JetBrains Mono',monospace" fontSize="10" fontWeight="bold" letterSpacing="1">S</text>
-                                    <text x="298" y="154" textAnchor="middle" fill="rgba(0,229,255,0.95)" fontFamily="'JetBrains Mono',monospace" fontSize="10" fontWeight="bold" letterSpacing="1">E</text>
-                                    <text x="2"   y="154" textAnchor="middle" fill="rgba(0,229,255,0.95)" fontFamily="'JetBrains Mono',monospace" fontSize="10" fontWeight="bold" letterSpacing="1">W</text>
+                                    {/* Compass labels — inside outer ring at cardinal edges */}
+                                    <text x="150" y="14"  textAnchor="middle" fill="rgba(0,229,255,0.95)" fontFamily="'JetBrains Mono',monospace" fontSize="10" fontWeight="bold" letterSpacing="1">N</text>
+                                    <text x="150" y="292" textAnchor="middle" fill="rgba(0,229,255,0.95)" fontFamily="'JetBrains Mono',monospace" fontSize="10" fontWeight="bold" letterSpacing="1">S</text>
+                                    <text x="292" y="154" textAnchor="middle" fill="rgba(0,229,255,0.95)" fontFamily="'JetBrains Mono',monospace" fontSize="10" fontWeight="bold" letterSpacing="1">E</text>
+                                    <text x="8"   y="154" textAnchor="middle" fill="rgba(0,229,255,0.95)" fontFamily="'JetBrains Mono',monospace" fontSize="10" fontWeight="bold" letterSpacing="1">W</text>
                                 </svg>
 
                                 {/* ── Rotating sweep (conic trail + arm) — magenta ── */}
@@ -759,7 +754,7 @@ const App = () => {
             {/* --- VIBE MATCH --- */}
             <section id="vibe" style={{ background: 'rgba(0, 229, 255, 0.02)', borderTop: '1px solid var(--tr-border)' }}>
                 <div className="container">
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '80px', alignItems: 'center' }}>
+                    <div className="tr-grid-2col" style={{ gap: '80px' }}>
                         <div>
                             <SectionHeader
                                 id="MODULE_05"
