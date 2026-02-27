@@ -334,14 +334,14 @@ const App = () => {
                 </div>
             </section>
 
-            {/* --- TACTICAL NAVIGATOR / SPATIAL AWARENESS --- */}
+            {/* --- ONE-THUMB DISCOVERY --- */}
             <section id="navigator">
                 <div className="container">
                     <SectionHeader
                         id="MODULE_02"
                         label="TACTICAL NAVIGATOR"
-                        title="SPATIAL AWARENESS"
-                        subtitle="Crew‑level radar that remembers where everyone was last seen, even when the festival goes offline."
+                        title="ONE‑THUMB DISCOVERY"
+                        subtitle="Swipe‑able set previews that tell you exactly what a DJ feels like before you ever step into the crowd."
                     />
 
                     <div className="tr-grid-2col">
@@ -350,113 +350,20 @@ const App = () => {
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
                             <GlassCard>
                                 <ul className="spatial-bullets">
-                                    <li>Glowing pips for every squad member, pinned to the map.</li>
-                                    <li>Last‑seen trails toward main stage, techno dome, or camp.</li>
-                                    <li>Works on pre‑loaded maps — no signal required.</li>
+                                    <li>Tap once, know the vibe. A neon play card that turns every DJ into a quick‑scan profile: genres, intensity and crowd energy in one thumb‑sized glance.</li>
+                                    <li>Genre chips that match your crew. TECHNO, ACID and more shown as glowing tags so you can steer friends toward sets they'll actually love.</li>
+                                    <li>RPG‑style trust stats. VIBE: DARK, FIRST‑TIMER SCORE and other micro‑metrics warn if a set is a safe intro or a chaos‑pit warp zone.</li>
                                 </ul>
                             </GlassCard>
                         </div>
 
-                        {/* Right — HUD festival map card */}
-                        <GlassCard className="spatial-card" style={{ padding: 0 }}>
-                            <div className="spatial-map">
-
-                                {/* HUD corner brackets */}
-                                <div className="spatial-hud-corner spatial-hud-corner--tl" />
-                                <div className="spatial-hud-corner spatial-hud-corner--tr" />
-                                <div className="spatial-hud-corner spatial-hud-corner--bl" />
-                                <div className="spatial-hud-corner spatial-hud-corner--br" />
-
-                                {/* Base map PNG — hidden gracefully if not yet placed */}
-                                <img
-                                    src="/images/spatial-awareness-map-base.png"
-                                    alt="Offline festival map showing squad locations and last‑seen trail"
-                                    className="spatial-map-base"
-                                    onError={(e) => { e.currentTarget.style.display = 'none'; }}
-                                />
-
-                                {/* Festival venue map + animated squad trail */}
-                                <svg
-                                    className="spatial-map-line"
-                                    viewBox="0 0 400 230"
-                                    preserveAspectRatio="xMidYMid meet"
-                                    aria-hidden="true"
-                                >
-                                    <defs>
-                                        {/* Squad trail gradient: lime → cyan → magenta */}
-                                        <linearGradient
-                                            id="squadLine"
-                                            gradientUnits="userSpaceOnUse"
-                                            x1="70" y1="175"
-                                            x2="205" y2="55"
-                                        >
-                                            <stop offset="0%"   stopColor="#7CFF8C" />
-                                            <stop offset="50%"  stopColor="#00F0FF" />
-                                            <stop offset="100%" stopColor="#FF4FD6" />
-                                        </linearGradient>
-                                    </defs>
-
-                                    {/* ── Venue path connections (dashed) ── */}
-                                    <path d="M 70 175 L 205 55 L 315 72 L 325 155" stroke="rgba(255,255,255,0.10)" strokeWidth="0.8" strokeDasharray="4 7" fill="none" />
-                                    <path d="M 70 175 L 298 198" stroke="rgba(255,255,255,0.07)" strokeWidth="0.8" strokeDasharray="4 7" fill="none" />
-
-                                    {/* ── Animated squad trail: YOU → TECHNO DOME ── */}
-                                    <path
-                                        className="spatial-map-line-path"
-                                        d="M 70 175 C 105 140, 158 105, 205 55"
-                                        fill="none"
-                                        stroke="url(#squadLine)"
-                                        strokeWidth="3"
-                                        strokeLinecap="round"
-                                        pathLength="220"
-                                    />
-
-                                    {/* ── MAIN STAGE — user position ── */}
-                                    <circle cx="70" cy="175" r="16" fill="rgba(0,229,255,0.08)" stroke="rgba(0,229,255,0.35)" strokeWidth="1" />
-                                    <circle cx="70" cy="175" r="22" fill="none" stroke="#7CFF8C" strokeWidth="0.8" opacity="0.22" />
-                                    <circle cx="70" cy="175" r="5"  fill="#7CFF8C" />
-                                    {/* YOU label */}
-                                    <rect x="5"  y="190" width="32" height="13" rx="3" fill="rgba(0,0,0,0.78)" stroke="rgba(124,255,140,0.45)" strokeWidth="0.6" />
-                                    <text x="21" y="199.5" textAnchor="middle" fill="rgba(124,255,140,0.95)" fontFamily="'JetBrains Mono',monospace" fontSize="6.5" fontWeight="bold">YOU</text>
-                                    {/* MAIN STAGE venue label */}
-                                    <rect x="5"  y="156" width="64" height="13" rx="3" fill="rgba(0,0,0,0.72)" stroke="rgba(255,255,255,0.18)" strokeWidth="0.5" />
-                                    <text x="37" y="165.5" textAnchor="middle" fill="rgba(255,255,255,0.78)" fontFamily="'JetBrains Mono',monospace" fontSize="6" fontWeight="bold">MAIN STAGE</text>
-
-                                    {/* ── TECHNO DOME (top-centre) — last-seen location ── */}
-                                    <circle cx="205" cy="55" r="14" fill="rgba(188,19,254,0.10)" stroke="rgba(188,19,254,0.5)" strokeWidth="1.2" />
-                                    <circle cx="205" cy="55" r="5"  fill="#FF4FD6" />
-                                    {/* TECHNO DOME venue label */}
-                                    <rect x="147" y="32" width="75" height="13" rx="3" fill="rgba(0,0,0,0.72)" stroke="rgba(255,255,255,0.18)" strokeWidth="0.5" />
-                                    <text x="184.5" y="41.5" textAnchor="middle" fill="rgba(255,255,255,0.78)" fontFamily="'JetBrains Mono',monospace" fontSize="6" fontWeight="bold">TECHNO DOME</text>
-                                    {/* Last-seen chip */}
-                                    <rect x="218" y="46" width="96" height="14" rx="4" fill="rgba(0,0,0,0.84)" stroke="rgba(0,229,255,0.5)" strokeWidth="0.75" />
-                                    <text x="266" y="55.5" textAnchor="middle" fill="rgba(0,229,255,0.95)" fontFamily="'JetBrains Mono',monospace" fontSize="5.8" fontWeight="bold">LAST SEEN: 14 MINS AGO</text>
-
-                                    {/* ── ACID ARENA (upper-right) ── */}
-                                    <circle cx="315" cy="72" r="10" fill="rgba(255,107,0,0.10)" stroke="rgba(255,107,0,0.45)" strokeWidth="1" />
-                                    <circle cx="315" cy="72" r="3.5" fill="#ff6b00" />
-                                    <rect x="280" y="53" width="62" height="13" rx="3" fill="rgba(0,0,0,0.72)" stroke="rgba(255,255,255,0.15)" strokeWidth="0.5" />
-                                    <text x="311" y="62" textAnchor="middle" fill="rgba(255,255,255,0.72)" fontFamily="'JetBrains Mono',monospace" fontSize="5.8" fontWeight="bold">ACID ARENA</text>
-
-                                    {/* ── ACID ARENA (lower-right) ── */}
-                                    <circle cx="325" cy="155" r="10" fill="rgba(255,107,0,0.10)" stroke="rgba(255,107,0,0.45)" strokeWidth="1" />
-                                    <circle cx="325" cy="155" r="3.5" fill="#ff6b00" />
-                                    <rect x="288" y="136" width="62" height="13" rx="3" fill="rgba(0,0,0,0.72)" stroke="rgba(255,255,255,0.15)" strokeWidth="0.5" />
-                                    <text x="319" y="145" textAnchor="middle" fill="rgba(255,255,255,0.72)" fontFamily="'JetBrains Mono',monospace" fontSize="5.8" fontWeight="bold">ACID ARENA</text>
-
-                                    {/* ── TECHNO DOME (lower-right) ── */}
-                                    <circle cx="298" cy="198" r="10" fill="rgba(188,19,254,0.08)" stroke="rgba(188,19,254,0.30)" strokeWidth="0.8" />
-                                    <circle cx="298" cy="198" r="3"  fill="#bc13fe" opacity="0.8" />
-                                    <rect x="248" y="179" width="75" height="13" rx="3" fill="rgba(0,0,0,0.72)" stroke="rgba(255,255,255,0.12)" strokeWidth="0.5" />
-                                    <text x="285.5" y="188" textAnchor="middle" fill="rgba(255,255,255,0.65)" fontFamily="'JetBrains Mono',monospace" fontSize="5.8" fontWeight="bold">TECHNO DOME</text>
-                                </svg>
-
-                                {/* Bottom HUD pill */}
-                                <div className="spatial-map-hud">
-                                    <Pill icon={Navigation}>SPATIAL AWARENESS</Pill>
-                                </div>
-
-                            </div>
+                        {/* Right — phone card */}
+                        <GlassCard className="one-thumb-card">
+                            <img
+                                src="/images/one-thumb-discovery-phone.png"
+                                alt="One-thumb discovery phone card previewing a DJ set with genres and vibe stats"
+                                className="one-thumb-card-img"
+                            />
                         </GlassCard>
 
                     </div>
@@ -773,15 +680,13 @@ const App = () => {
                             </div>
                         </div>
 
-                        <div style={{ position: 'relative' }}>
-                            <GlassCard style={{ padding: '60px', borderRadius: '40px', textAlign: 'center' }}>
-                                <div style={{ width: '200px', height: '200px', margin: '0 auto', background: 'radial-gradient(circle, rgba(0, 229, 255, 0.1) 0%, transparent 70%)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(0, 229, 255, 0.1)' }}>
-                                    <Globe size={64} className="neon-text-cyan" />
-                                </div>
-                                <div className="heading-tech" style={{ marginTop: '40px', fontSize: '1.5rem' }}>GLOBAL_VIBE_LOCK</div>
-                                <div className="mono-label" style={{ opacity: 0.4, marginTop: '8px' }}>MAPPING_SQUAD_COMPATIBILITY</div>
-                            </GlassCard>
-                        </div>
+                        <GlassCard className="vibe-aggrometer-card">
+                            <img
+                                src="/images/vibe-aggrometer-card.png"
+                                alt="3D glass crowd intensity and first-timer trust score Aggrometer card"
+                                className="vibe-aggrometer-card-img"
+                            />
+                        </GlassCard>
                     </div>
                 </div>
             </section>
