@@ -334,147 +334,131 @@ const App = () => {
                 </div>
             </section>
 
-            {/* --- TACTICAL NAVIGATOR --- */}
+            {/* --- TACTICAL NAVIGATOR / SPATIAL AWARENESS --- */}
             <section id="navigator">
                 <div className="container">
                     <SectionHeader
                         id="MODULE_02"
-                        label="SURVIVAL_CRITICAL_NAVIGATION"
-                        title="THE TACTICAL NAVIGATOR"
-                        subtitle="Trade useless grey vector grids for geo‑referenced festival maps with marked water, medical and meet‑up zones that stay visible in total signal blackout."
+                        label="TACTICAL NAVIGATOR"
+                        title="SPATIAL AWARENESS"
+                        subtitle="Crew‑level radar that remembers where everyone was last seen, even when the festival goes offline."
                     />
 
                     <div className="tr-grid-2col">
+
+                        {/* Left — feature bullet list */}
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
                             <GlassCard>
-                                <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
-                                    <div style={{ padding: '16px', background: 'rgba(0, 229, 255, 0.1)', borderRadius: '12px' }}>
-                                        <Droplets className="neon-text-cyan" />
-                                    </div>
-                                    <div>
-                                        <h3 className="heading-tech">WATER STATIONS</h3>
-                                        <div className="mono-label" style={{ color: 'var(--tr-cyan)', marginTop: '4px' }}>AQ_TARGET_ID // CYBER_CYAN</div>
-                                    </div>
-                                </div>
-                            </GlassCard>
-
-                            <GlassCard>
-                                <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
-                                    <div style={{ padding: '16px', background: 'rgba(255, 107, 0, 0.1)', borderRadius: '12px' }}>
-                                        <ShieldAlert style={{ color: 'var(--safety-orange)' }} />
-                                    </div>
-                                    <div>
-                                        <h3 className="heading-tech">MEDICAL TENTS</h3>
-                                        <div className="mono-label" style={{ color: 'var(--safety-orange)', marginTop: '4px' }}>HIGH_PRIORITY // ALERT_ACTIVE</div>
-                                    </div>
-                                </div>
+                                <ul className="spatial-bullets">
+                                    <li>Glowing pips for every squad member, pinned to the map.</li>
+                                    <li>Last‑seen trails toward main stage, techno dome, or camp.</li>
+                                    <li>Works on pre‑loaded maps — no signal required.</li>
+                                </ul>
                             </GlassCard>
                         </div>
 
-                        <GlassCard style={{ padding: 0 }}>
-                            <div
-                                style={{
-                                    height: '400px',
-                                    position: 'relative',
-                                    background:
-                                        'radial-gradient(circle at bottom, rgba(0,0,0,0.9), #050508)',
-                                    overflow: 'hidden',
-                                }}
-                            >
-                                {/* subtle grid */}
-                                <div
-                                    style={{
-                                        position: 'absolute',
-                                        inset: 0,
-                                        backgroundImage:
-                                            'linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)',
-                                        backgroundSize: '46px 46px',
-                                        opacity: 0.4,
-                                    }}
+                        {/* Right — HUD festival map card */}
+                        <GlassCard className="spatial-card" style={{ padding: 0 }}>
+                            <div className="spatial-map">
+
+                                {/* HUD corner brackets */}
+                                <div className="spatial-hud-corner spatial-hud-corner--tl" />
+                                <div className="spatial-hud-corner spatial-hud-corner--tr" />
+                                <div className="spatial-hud-corner spatial-hud-corner--bl" />
+                                <div className="spatial-hud-corner spatial-hud-corner--br" />
+
+                                {/* Base map PNG — hidden gracefully if not yet placed */}
+                                <img
+                                    src="/images/spatial-awareness-map-base.png"
+                                    alt="Offline festival map showing squad locations and last‑seen trail"
+                                    className="spatial-map-base"
+                                    onError={(e) => { e.currentTarget.style.display = 'none'; }}
                                 />
 
-                                {/* concentric circles */}
-                                {[90, 140, 190].map((size, i) => (
-                                    <div
-                                        key={size}
-                                        style={{
-                                            position: 'absolute',
-                                            top: '50%',
-                                            left: '50%',
-                                            width: `${size * 2}px`,
-                                            height: `${size * 2}px`,
-                                            borderRadius: '50%',
-                                            border: `1px solid rgba(0,229,255,${0.18 + i * 0.12})`,
-                                            transform: 'translate(-50%, -50%)',
-                                        }}
-                                    />
-                                ))}
-
-                                {/* path line */}
+                                {/* Festival venue map + animated squad trail */}
                                 <svg
-                                    width="280"
-                                    height="160"
-                                    viewBox="0 0 280 160"
-                                    style={{
-                                        position: 'absolute',
-                                        top: '32%',
-                                        left: '50%',
-                                        transform: 'translateX(-50%)',
-                                    }}
+                                    className="spatial-map-line"
+                                    viewBox="0 0 400 230"
+                                    preserveAspectRatio="xMidYMid meet"
+                                    aria-hidden="true"
                                 >
+                                    <defs>
+                                        {/* Squad trail gradient: lime → cyan → magenta */}
+                                        <linearGradient
+                                            id="squadLine"
+                                            gradientUnits="userSpaceOnUse"
+                                            x1="70" y1="175"
+                                            x2="205" y2="55"
+                                        >
+                                            <stop offset="0%"   stopColor="#7CFF8C" />
+                                            <stop offset="50%"  stopColor="#00F0FF" />
+                                            <stop offset="100%" stopColor="#FF4FD6" />
+                                        </linearGradient>
+                                    </defs>
+
+                                    {/* ── Venue path connections (dashed) ── */}
+                                    <path d="M 70 175 L 205 55 L 315 72 L 325 155" stroke="rgba(255,255,255,0.10)" strokeWidth="0.8" strokeDasharray="4 7" fill="none" />
+                                    <path d="M 70 175 L 298 198" stroke="rgba(255,255,255,0.07)" strokeWidth="0.8" strokeDasharray="4 7" fill="none" />
+
+                                    {/* ── Animated squad trail: YOU → TECHNO DOME ── */}
                                     <path
-                                        d="M10 140 C 60 40, 140 60, 270 20"
+                                        className="spatial-map-line-path"
+                                        d="M 70 175 C 105 140, 158 105, 205 55"
                                         fill="none"
-                                        stroke="rgba(0,229,255,0.6)"
-                                        strokeWidth="2"
-                                        strokeDasharray="4 6"
+                                        stroke="url(#squadLine)"
+                                        strokeWidth="3"
+                                        strokeLinecap="round"
+                                        pathLength="220"
                                     />
+
+                                    {/* ── MAIN STAGE — user position ── */}
+                                    <circle cx="70" cy="175" r="16" fill="rgba(0,229,255,0.08)" stroke="rgba(0,229,255,0.35)" strokeWidth="1" />
+                                    <circle cx="70" cy="175" r="22" fill="none" stroke="#7CFF8C" strokeWidth="0.8" opacity="0.22" />
+                                    <circle cx="70" cy="175" r="5"  fill="#7CFF8C" />
+                                    {/* YOU label */}
+                                    <rect x="5"  y="190" width="32" height="13" rx="3" fill="rgba(0,0,0,0.78)" stroke="rgba(124,255,140,0.45)" strokeWidth="0.6" />
+                                    <text x="21" y="199.5" textAnchor="middle" fill="rgba(124,255,140,0.95)" fontFamily="'JetBrains Mono',monospace" fontSize="6.5" fontWeight="bold">YOU</text>
+                                    {/* MAIN STAGE venue label */}
+                                    <rect x="5"  y="156" width="64" height="13" rx="3" fill="rgba(0,0,0,0.72)" stroke="rgba(255,255,255,0.18)" strokeWidth="0.5" />
+                                    <text x="37" y="165.5" textAnchor="middle" fill="rgba(255,255,255,0.78)" fontFamily="'JetBrains Mono',monospace" fontSize="6" fontWeight="bold">MAIN STAGE</text>
+
+                                    {/* ── TECHNO DOME (top-centre) — last-seen location ── */}
+                                    <circle cx="205" cy="55" r="14" fill="rgba(188,19,254,0.10)" stroke="rgba(188,19,254,0.5)" strokeWidth="1.2" />
+                                    <circle cx="205" cy="55" r="5"  fill="#FF4FD6" />
+                                    {/* TECHNO DOME venue label */}
+                                    <rect x="147" y="32" width="75" height="13" rx="3" fill="rgba(0,0,0,0.72)" stroke="rgba(255,255,255,0.18)" strokeWidth="0.5" />
+                                    <text x="184.5" y="41.5" textAnchor="middle" fill="rgba(255,255,255,0.78)" fontFamily="'JetBrains Mono',monospace" fontSize="6" fontWeight="bold">TECHNO DOME</text>
+                                    {/* Last-seen chip */}
+                                    <rect x="218" y="46" width="96" height="14" rx="4" fill="rgba(0,0,0,0.84)" stroke="rgba(0,229,255,0.5)" strokeWidth="0.75" />
+                                    <text x="266" y="55.5" textAnchor="middle" fill="rgba(0,229,255,0.95)" fontFamily="'JetBrains Mono',monospace" fontSize="5.8" fontWeight="bold">LAST SEEN: 14 MINS AGO</text>
+
+                                    {/* ── ACID ARENA (upper-right) ── */}
+                                    <circle cx="315" cy="72" r="10" fill="rgba(255,107,0,0.10)" stroke="rgba(255,107,0,0.45)" strokeWidth="1" />
+                                    <circle cx="315" cy="72" r="3.5" fill="#ff6b00" />
+                                    <rect x="280" y="53" width="62" height="13" rx="3" fill="rgba(0,0,0,0.72)" stroke="rgba(255,255,255,0.15)" strokeWidth="0.5" />
+                                    <text x="311" y="62" textAnchor="middle" fill="rgba(255,255,255,0.72)" fontFamily="'JetBrains Mono',monospace" fontSize="5.8" fontWeight="bold">ACID ARENA</text>
+
+                                    {/* ── ACID ARENA (lower-right) ── */}
+                                    <circle cx="325" cy="155" r="10" fill="rgba(255,107,0,0.10)" stroke="rgba(255,107,0,0.45)" strokeWidth="1" />
+                                    <circle cx="325" cy="155" r="3.5" fill="#ff6b00" />
+                                    <rect x="288" y="136" width="62" height="13" rx="3" fill="rgba(0,0,0,0.72)" stroke="rgba(255,255,255,0.15)" strokeWidth="0.5" />
+                                    <text x="319" y="145" textAnchor="middle" fill="rgba(255,255,255,0.72)" fontFamily="'JetBrains Mono',monospace" fontSize="5.8" fontWeight="bold">ACID ARENA</text>
+
+                                    {/* ── TECHNO DOME (lower-right) ── */}
+                                    <circle cx="298" cy="198" r="10" fill="rgba(188,19,254,0.08)" stroke="rgba(188,19,254,0.30)" strokeWidth="0.8" />
+                                    <circle cx="298" cy="198" r="3"  fill="#bc13fe" opacity="0.8" />
+                                    <rect x="248" y="179" width="75" height="13" rx="3" fill="rgba(0,0,0,0.72)" stroke="rgba(255,255,255,0.12)" strokeWidth="0.5" />
+                                    <text x="285.5" y="188" textAnchor="middle" fill="rgba(255,255,255,0.65)" fontFamily="'JetBrains Mono',monospace" fontSize="5.8" fontWeight="bold">TECHNO DOME</text>
                                 </svg>
 
-                                {/* POI markers */}
-                                <div
-                                    style={{
-                                        position: 'absolute',
-                                        top: '42%',
-                                        left: '38%',
-                                        width: 12,
-                                        height: 12,
-                                        borderRadius: '50%',
-                                        background: 'var(--tr-cyan)',
-                                        boxShadow: '0 0 18px var(--tr-cyan)',
-                                    }}
-                                />
-                                <div
-                                    style={{
-                                        position: 'absolute',
-                                        top: '30%',
-                                        right: '30%',
-                                        width: 12,
-                                        height: 12,
-                                        borderRadius: '50%',
-                                        background: 'var(--safety-orange)',
-                                        boxShadow: '0 0 18px var(--safety-orange)',
-                                    }}
-                                />
-                                <div
-                                    style={{
-                                        position: 'absolute',
-                                        bottom: '26%',
-                                        left: '52%',
-                                        width: 12,
-                                        height: 12,
-                                        borderRadius: '50%',
-                                        background: 'var(--tr-magenta)',
-                                        boxShadow: '0 0 18px var(--tr-magenta)',
-                                    }}
-                                />
-
-                                {/* bottom pill */}
-                                <div style={{ position: 'absolute', bottom: 20, left: 20 }}>
-                                    <Pill icon={MapIcon}>OFFLINE FESTIVAL MAP</Pill>
+                                {/* Bottom HUD pill */}
+                                <div className="spatial-map-hud">
+                                    <Pill icon={Navigation}>SPATIAL AWARENESS</Pill>
                                 </div>
+
                             </div>
                         </GlassCard>
+
                     </div>
                 </div>
             </section>

@@ -54,11 +54,13 @@ body {
   position: relative;
   border-radius: 24px;
   padding: 1.75rem 2rem;
-  background: rgba(4, 10, 24, 0.32);
+  background: rgba(4, 10, 24, 0.26);
   border: 1px solid rgba(255, 255, 255, 0.18);
   box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.65),
-    0 0 28px rgba(0, 229, 255, 0.12);
+    0 20px 60px rgba(0, 0, 0, 0.60),
+    0 0 28px rgba(0, 229, 255, 0.10),
+    0 0 0 1px rgba(124, 255, 140, 0.06),
+    0 0 22px rgba(255, 77, 214, 0.07);
   backdrop-filter: blur(22px) saturate(135%);
   -webkit-backdrop-filter: blur(22px) saturate(135%);
   overflow: hidden;
@@ -69,8 +71,10 @@ body {
   transform: translateY(-4px);
   border-color: rgba(0, 229, 255, 0.35);
   box-shadow:
-    0 26px 60px rgba(0, 0, 0, 0.70),
-    0 0 38px rgba(0, 229, 255, 0.20);
+    0 26px 60px rgba(0, 0, 0, 0.65),
+    0 0 38px rgba(0, 229, 255, 0.20),
+    0 0 0 1px rgba(124, 255, 140, 0.10),
+    0 0 28px rgba(255, 77, 214, 0.10);
 }
 
 .tr-glass-card::before {
@@ -87,11 +91,13 @@ body {
   margin: 0 auto;
   padding: 1.75rem 2.5rem;
   border-radius: 28px;
-  background: rgba(4, 10, 24, 0.30);
+  background: rgba(4, 10, 24, 0.24);
   border: 1px solid rgba(255, 255, 255, 0.18);
   box-shadow:
-    0 28px 70px rgba(0, 0, 0, 0.70),
-    0 0 36px rgba(0, 229, 255, 0.15);
+    0 28px 70px rgba(0, 0, 0, 0.65),
+    0 0 36px rgba(0, 229, 255, 0.12),
+    0 0 0 1px rgba(124, 255, 140, 0.06),
+    0 0 28px rgba(255, 77, 214, 0.07);
   backdrop-filter: blur(22px) saturate(135%);
   -webkit-backdrop-filter: blur(22px) saturate(135%);
 }
@@ -117,7 +123,7 @@ body {
 }
 
 .hero-phones {
-  max-width: 1400px;
+  max-width: 1800px;
   width: 100%;
   margin: 48px auto 0;
   padding: 0;
@@ -355,5 +361,161 @@ section {
   /* Radar card — tighter padding on very small screens */
   .tr-radar-card {
     padding: 20px 16px !important;
+  }
+
+  /* Spatial Awareness map */
+  .spatial-card {
+    max-width: 420px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .spatial-bullets li {
+    font-size: 0.95rem;
+  }
+}
+
+/* ── Spatial Awareness — Tactical Navigator ── */
+
+/* Override GlassCard default padding so map fills edge-to-edge */
+.spatial-card {
+  padding: 0;
+}
+
+/* Map viewport */
+.spatial-map {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 20px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 65% 35%, rgba(0, 229, 255, 0.08) 0%, transparent 55%),
+    radial-gradient(circle at 30% 70%, rgba(255, 43, 214, 0.05) 0%, transparent 45%),
+    #010610;
+}
+
+/* Fallback grid — visible when no map PNG is present */
+.spatial-map::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0, 229, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 229, 255, 0.06) 1px, transparent 1px);
+  background-size: 40px 40px;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* HUD corner brackets */
+.spatial-hud-corner {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  z-index: 5;
+}
+
+.spatial-hud-corner--tl { top: 14px;    left: 14px;  border-top:    2px solid var(--tr-cyan); border-left:   2px solid var(--tr-cyan); }
+.spatial-hud-corner--tr { top: 14px;    right: 14px; border-top:    2px solid var(--tr-cyan); border-right:  2px solid var(--tr-cyan); }
+.spatial-hud-corner--bl { bottom: 14px; left: 14px;  border-bottom: 2px solid var(--tr-cyan); border-left:   2px solid var(--tr-cyan); }
+.spatial-hud-corner--br { bottom: 14px; right: 14px; border-bottom: 2px solid var(--tr-cyan); border-right:  2px solid var(--tr-cyan); }
+
+/* Base festival map image */
+.spatial-map-base {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  z-index: 1;
+  opacity: 0.8;
+}
+
+/* SVG overlay — squad line and pips */
+.spatial-map-line {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Animated glowing squad trail */
+.spatial-map-line-path {
+  stroke-width: 3;
+  stroke-linecap: round;
+  fill: none;
+  filter: drop-shadow(0 0 5px rgba(124, 255, 140, 0.65)) drop-shadow(0 0 14px rgba(0, 240, 255, 0.45));
+  stroke-dasharray: 220;
+  stroke-dashoffset: 220;
+  animation: squadLinePulse 3.2s ease-in-out infinite;
+}
+
+@keyframes squadLinePulse {
+  0%   { stroke-dashoffset: 220; opacity: 0;    }
+  10%  {                          opacity: 0.75; }
+  72%  { stroke-dashoffset: 0;   opacity: 1;    }
+  88%  { stroke-dashoffset: 0;   opacity: 0.55; }
+  100% { stroke-dashoffset: 0;   opacity: 0;    }
+}
+
+/* Reduced-motion: static glowing line, no travelling animation */
+@media (prefers-reduced-motion: reduce) {
+  .spatial-map-line-path {
+    animation: none;
+    stroke-dashoffset: 0;
+    opacity: 0.9;
+  }
+}
+
+/* Bottom HUD pill overlay */
+.spatial-map-hud {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  z-index: 5;
+}
+
+/* Feature bullet list */
+.spatial-bullets {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.spatial-bullets li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* Glowing pip bullet marker */
+.spatial-bullets li::before {
+  content: "";
+  flex-shrink: 0;
+  width: 7px;
+  height: 7px;
+  margin-top: 8px;
+  border-radius: 50%;
+  background: var(--tr-cyan);
+  box-shadow: 0 0 8px var(--tr-cyan), 0 0 16px rgba(0, 229, 255, 0.4);
+}
+
+/* Small phones */
+@media (max-width: 430px) {
+  .spatial-map {
+    border-radius: 16px;
+  }
+
+  .spatial-bullets li {
+    font-size: 0.9rem;
   }
 }
